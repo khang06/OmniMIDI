@@ -595,6 +595,11 @@ extern "C" BOOL KDMAPI TerminateKDMAPIStream() {
 		ret = FALSE;
 	}
 
+	// debug code
+	char asdf[1024] = {};
+	snprintf(asdf, sizeof(asdf), "%llu of %llu events skipped", EVBuffer.EventsSkipped, EVBuffer.EventsSent);
+	MessageBoxA(NULL, asdf, "", 0);
+
 	CloseConsole();
 	return ret;
 }

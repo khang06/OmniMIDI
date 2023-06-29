@@ -6,7 +6,14 @@ Some code has been optimized by Sono (SonoSooS), the old one has been commented 
 #define SMALLBUFFER 2
 
 int __inline BufferCheck(void) {
-	return (EVBuffer.ReadHead != EVBuffer.WriteHead);
+	//return (EVBuffer.ReadHead != EVBuffer.WriteHead);
+	if (EVBuffer.ReadHead == EVBuffer.WriteHeadCached) {
+		EVBuffer.WriteHeadCached = EVBuffer.WriteHead;
+		if (EVBuffer.ReadHead == EVBuffer.WriteHeadCached) {
+			return false;
+		}
+	}
+	return true;
 }
 
 BOOL __inline CheckIfEventIsToIgnore(DWORD dwParam1)
@@ -343,7 +350,8 @@ void __inline PlayBufferedDataHyper(void) {
 	}
 
 	do PBufData();
-	while (EVBuffer.ReadHead != EVBuffer.WriteHead);
+	while (EVBuffer.ReadHead != EVBuffer.WriteHeadCached);
+	//while (EVBuffer.ReadHead != EVBuffer.WriteHead);
 }
 
 void __inline PlayBufferedDataChunk(void) {
@@ -414,8 +422,21 @@ void __inline ParseDataHyper(DWORD_PTR dwParam1)
 
 	EVBuffer.Buffer[EVBuffer.WriteHead].Event = dwParam1;
 
+	EVBuffer.EventsSent++;
+	/*
 	if (NextWriteHead != EVBuffer.ReadHead)
 		EVBuffer.WriteHead = NextWriteHead; //skip notes properly
+	else
+		EVBuffer.EventsSkipped++;
+	*/
+	if (NextWriteHead == EVBuffer.ReadHeadCached) {
+		EVBuffer.ReadHeadCached = EVBuffer.ReadHead;
+		if (NextWriteHead == EVBuffer.ReadHeadCached) {
+			EVBuffer.EventsSkipped++;
+			return;
+		}
+	}
+	EVBuffer.WriteHead = NextWriteHead;
 
 	// UnlockForWriting(&EPThreadsL);
 }

@@ -56,8 +56,26 @@ typedef struct EvBuf_t {
 typedef struct EventsBuffer {
 	EvBuf_t*			Buffer;
 	ULONGLONG			BufSize;
+
+	// Written by reader thread
+	alignas(64) volatile ULONGLONG	ReadHead;
+	ULONGLONG WriteHeadCached;
+
+	// Written by writer thread
+	alignas(64) volatile ULONGLONG	WriteHead;
+	ULONGLONG ReadHeadCached;
+	ULONGLONG EventsSent;
+	ULONGLONG EventsSkipped;
+
+	/*
 	volatile ULONGLONG	ReadHead;
 	volatile ULONGLONG	WriteHead;
+
+	alignas(64) ULONGLONG EventsSent;
+	ULONGLONG EventsSkipped;
+	ULONGLONG WriteHeadCached;
+	ULONGLONG ReadHeadCached;
+	*/
 };
 
 // The buffer's structure

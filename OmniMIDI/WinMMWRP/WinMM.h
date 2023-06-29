@@ -1147,6 +1147,8 @@ BOOL ImportFromWinMM(int i, TCHAR* ErrorBuf) {
 		);
 		return FALSE;
 	}
+
+	return TRUE;
 }
 
 void GetSpeedHack() {

@@ -146,7 +146,7 @@ LPCWSTR ReturnBASSErrorFix(INT ErrorCode) {
 	}
 }
 
-void ShowError(int error, int mode, CHAR* engine, CHAR* codeline, int showerror) {
+void ShowError(int error, int mode, const CHAR* engine, CHAR* codeline, int showerror) {
 	CHAR title[NTFS_MAX_PATH] = { 0 };
 	CHAR main[NTFS_MAX_PATH] = { 0 };
 

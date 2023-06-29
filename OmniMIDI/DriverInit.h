@@ -1046,7 +1046,6 @@ BEGSWITCH:
 				{
 					PathAppend(configuratorapp, _T("\\OmniMIDI\\OmniMIDIConfigurator.exe"));
 					ShellExecute(NULL, L"open", configuratorapp, L"/AT", NULL, SW_SHOWNORMAL);
-					delete configuratorapp;
 				}
 			}
 

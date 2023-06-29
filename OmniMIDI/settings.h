@@ -151,6 +151,10 @@ void ResetSynth(BOOL SwitchingBufferMode, BOOL ModeReset) {
 	if (SwitchingBufferMode) {
 		EVBuffer.ReadHead = 0;
 		EVBuffer.WriteHead = 0;
+		EVBuffer.ReadHeadCached = 0;
+		EVBuffer.WriteHeadCached = 0;
+		EVBuffer.EventsSent = 0;
+		EVBuffer.EventsSkipped = 0;
 		memset(EVBuffer.Buffer, 0, sizeof(EVBuffer.Buffer));
 		PrintMessageToDebugLog("ResetSynth", "EVBuffer has been reset.");
 	}
@@ -610,6 +614,8 @@ void FreeUpMemory() {
 		EVBuffer.BufSize = 0;
 		EVBuffer.WriteHead = 0;
 		EVBuffer.ReadHead = 0;
+		EVBuffer.ReadHeadCached = 0;
+		EVBuffer.WriteHeadCached = 0;
 	}
 
 	PrintMessageToDebugLog("FreeUpMemoryFunc", "Freed.");
@@ -699,6 +705,10 @@ void AllocateMemory(BOOL restart) {
 		// Set heads to 0 and store buffer size
 		EVBuffer.WriteHead = 0;
 		EVBuffer.ReadHead = 0;
+		EVBuffer.ReadHeadCached = 0;
+		EVBuffer.WriteHeadCached = 0;
+		EVBuffer.EventsSent = 0;
+		EVBuffer.EventsSkipped = 0;
 		PrintMessageToDebugLog("AllocateMemoryFunc", "Set heads to 0.");
 
 		if (restart)
